@@ -8,15 +8,17 @@ __Version__ = "0.1test"
 
 class Coffesploit(object):
     """Main Class"""
-    def __init__(self):
+    def __init__(self, basepath):
         self.target = Target()
         self.tool = None
         self.pluginmanager = PluginManager()
         self.helper = Help()
+        self.basepath = basepath
+        
     def set_target(self,rhost=None,url=None):
-        if url != None:
+        if url is not None:
             self.target.seturl(url)
-        if rhost != None:
+        if rhost is not None:
             self.target.setrhost(rhost)
     def set(self, arg1, arg2):
         self.pluginmanager.current_plugin.set_arg(arg1,arg2)
@@ -24,15 +26,16 @@ class Coffesploit(object):
         if arg == "target":
             print "ip:",self.target.getrhost(),"url:",self.target.geturl()
         if arg == "status":
-            if self.pluginmanager.current_plugin !=None:
-                print self.pluginmanager.current_plugin.status()
+            if self.pluginmanager.current_plugin is not None:
+                self.pluginmanager.current_plugin.status()
+                
     def use(self,arg):
         self.pluginmanager.set_current_plugin_name(arg)
         self.pluginmanager.load_plugin()
+        
     def run(self):
-        print "scanning .................\n","please wait!\n"
         self.pluginmanager.current_plugin.run()
-        print self.pluginmanager.current_plugin.result
+        self.pluginmanager.current_plugin.result()
 
     def main_help (self):
         return self.helper.main_help()

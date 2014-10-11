@@ -4,14 +4,15 @@ import os
 
 
 class Console(object):
-    def __init__(self):
-        self.main = Coffesploit()
+    def __init__(self,basepath):
+        self.main = Coffesploit(basepath)
         self.cmd = None
 
     def start(self):
         self.banner()
         while 1:
             try:
+                #show plugin name in shell
                 if self.main.pluginmanager.current_plugin_name:
                     self.cmd = raw_input(self.main.pluginmanager.current_plugin_name+'>')
                 else:
@@ -107,6 +108,7 @@ class Console(object):
             elif command == "show":
                 self.main.show(args[1])
             elif command == "use":
+                #to load plugin
                 self.main.use(args[1])
         else:
             os.system(cmd)
