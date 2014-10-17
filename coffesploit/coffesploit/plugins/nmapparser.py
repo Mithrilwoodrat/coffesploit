@@ -4,6 +4,7 @@ from nmap import PortScanner
 from testplugin import TestPlugin
 from resultplugin import ResultPlugin
 
+
 class NmapParser(TestPlugin):
     def __init__(self):
         self.tool_name = "nmap"
@@ -28,7 +29,7 @@ class NmapParser(TestPlugin):
             print 'please set hosts'
             
     def scan_result(self):
-        if self.hosts is not None:
+        if self.hosts is not None and self.nm.all_hosts():
             return self.nm[self.hosts]
     
     def run(self):
@@ -45,7 +46,7 @@ class NmapParser(TestPlugin):
             self.resultparser.set_state(self.scan_result().state())
             self.resultparser.set_address(self.hosts)
             self.resultparser.set_openports(self.scan_result().all_tcp())
-            if self.scan_result().has_key(u'tcp'):
+            if u'tcp' in self.scan_result():
                 self.resultparser.set_servers(self.scan_result()[u'tcp'])
 
             print "hostname:", self.resultparser.get_hostname

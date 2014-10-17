@@ -9,12 +9,11 @@ class ImportPlugin(object):
         self.config_path()
         self.parse_config()
 
-
     def config_path(self):
         if not "plugins" in os.getcwd():
             self.path = os.getcwd()+"/coffesploit/plugins/"
         else:
-            self.path = ""
+            self.path = os.getcwd()
 
     def getpath(self):
         return self.path
@@ -23,10 +22,10 @@ class ImportPlugin(object):
     def parse_config(self):
         try:
             filename = self.path+"config.ini"
-            conf = open(filename,"r")
+            conf = open(filename, "r")
             for line in conf.readlines():
                 plugin_name, plugin_file, plugin_class = line.split(",")
-                self.plugins_list[plugin_name] = plugin_file,plugin_class
+                self.plugins_list[plugin_name] = plugin_file, plugin_class
         except IOError:
             print ("must have config file")
             print self.path
@@ -34,5 +33,3 @@ class ImportPlugin(object):
 
     def get_plugins_list(self):
         return self.plugins_list
-
-

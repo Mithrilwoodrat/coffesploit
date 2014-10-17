@@ -23,21 +23,21 @@ class ResultPlugin(object):
     def get_openports(self):
         return self.openports
 
-    def set_servers(self,servers):
+    def set_servers(self, servers):
         self.servers = servers
 
     @property
     def get_servers(self):
-        return  self.servers
+        return self.servers
 
-    def set_hostname(self,hostname):
+    def set_hostname(self, hostname):
         self.hostname = hostname
 
     @property
     def get_hostname(self):
         return self.hostname
 
-    def set_state(self,state):
+    def set_state(self, state):
         self.state = state
 
     @property

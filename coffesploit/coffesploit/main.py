@@ -27,15 +27,16 @@ class Coffesploit(object):
             print "ip:",self.target.getrhost(),"url:",self.target.geturl()
         if arg == "status":
             if self.pluginmanager.current_plugin is not None:
-                self.pluginmanager.current_plugin.status()
+                self.pluginmanager.plugin_status()
+        if arg == "version":
+            print "Currnt Version:",self.version()
                 
     def use(self,arg):
-        self.pluginmanager.set_current_plugin_name(arg)
-        self.pluginmanager.load_plugin()
+        self.pluginmanager.load_plugin(arg)
         
     def run(self):
-        self.pluginmanager.current_plugin.run()
-        self.pluginmanager.current_plugin.result()
+        self.pluginmanager.plugin_run()
+        self.pluginmanager.plugin_result()
 
     def main_help (self):
         return self.helper.main_help()
