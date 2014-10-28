@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
-from main import Coffesploit
 import os
+from coffesploit.core.coffesplot import Coffesploit
 
 
 class Console(object):
-    def __init__(self,basepath):
-        self.main = Coffesploit(basepath)
+    def __init__(self):
+        self.main = Coffesploit()
         self.cmd = None
 
     def start(self):
@@ -14,7 +14,8 @@ class Console(object):
             try:
                 #show plugin name in shell
                 if self.main.pluginmanager.current_plugin_name:
-                    self.cmd = raw_input(self.main.pluginmanager.current_plugin_name+'>')
+                    self.cmd = raw_input(self.main.pluginmanager.current_plugin_type + "/" +
+                                         self.main.pluginmanager.current_plugin_name + '>')
                 else:
                     self.cmd = raw_input('>')
                 self.parsecmd(self.cmd)
@@ -25,7 +26,7 @@ class Console(object):
                 self.exit()
 
     def banner(self):
-        print ( """
+        print ("""
 
             Welcome to CoffeSploit :)
 
@@ -82,14 +83,12 @@ class Console(object):
             self.main.help("use")
         elif cmd == "banner":
             self.banner()
-        elif cmd == "plugins":
-            print self.main.main_list()
         elif cmd == "run":
             self.main.run()
         elif len(cmd.split(" ")) >= 2:
             args = cmd.split(" ")
             command = args[0]
-            if command == "target" and (len(args) == 3):
+            if command == "target" and len(args) == 3:
                 if args[1] == "-u":
                     self.main.set_target(url=args[2])
                 elif args[1] == "-r":
@@ -98,7 +97,7 @@ class Console(object):
                     print "error"
                     self.main.help("target")
             if command == "set":
-                if (len(args) == 3):
+                if len(args) == 3:
                     self.main.set(args[1], args[2])
                 else:
                     print "error"

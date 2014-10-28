@@ -1,19 +1,22 @@
 # -*- coding: utf-8 -*-
-from target import Target
-from help import Help
-from pluginmanager import PluginManager
+from coffesploit.core.target import Target
+from coffesploit.core.help import Help
+from coffesploit.core.pluginmanager import PluginManager
 
-__Version__ = "0.1test"
+__Version__ = "0.2test"
 
 
 class Coffesploit(object):
     """Main Class"""
-    def __init__(self, basepath):
+    def __init__(self):
         self.target = Target()
         self.tool = None
         self.pluginmanager = PluginManager()
         self.helper = Help()
-        self.basepath = basepath
+
+    def config_from(self,basedir,db_uri):
+        self.basedir = basedir
+        self.db_uri = db_uri
         
     def set_target(self,rhost=None,url=None):
         if url is not None:
@@ -21,7 +24,7 @@ class Coffesploit(object):
         if rhost is not None:
             self.target.setrhost(rhost)
     def set(self, arg1, arg2):
-        self.pluginmanager.current_plugin.set_arg(arg1,arg2)
+        self.pluginmanager.current_plugin.set_args(arg1,arg2)
     def show(self,arg):
         if arg == "target":
             print "ip:",self.target.getrhost(),"url:",self.target.geturl()
@@ -30,6 +33,8 @@ class Coffesploit(object):
                 self.pluginmanager.plugin_status()
         if arg == "version":
             print "Currnt Version:",self.version()
+        if arg == "plugins":
+            print self.plugin_list()
                 
     def use(self,arg):
         self.pluginmanager.load_plugin(arg)
@@ -40,7 +45,7 @@ class Coffesploit(object):
 
     def main_help (self):
         return self.helper.main_help()
-    def main_list (self):
+    def plugin_list (self):
         return self.pluginmanager.importer.get_plugins_list()
     def help(self,arg):
         """show help info of t"""

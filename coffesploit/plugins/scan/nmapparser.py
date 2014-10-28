@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 from nmap import PortScanner
 #use python nmap parse lib
-from testplugin import TestPlugin
-from resultplugin import ResultPlugin
+from coffesploit.plugins.pluginmanage.scanplugin import ScanPlugin
+from coffesploit.plugins.pluginmanage.resultplugin import ResultPlugin
 
 
-class NmapParser(TestPlugin):
+class NmapParser(ScanPlugin):
     def __init__(self):
         self.tool_name = "nmap"
         super(NmapParser, self).__init__("nmap")
@@ -53,12 +53,17 @@ class NmapParser(TestPlugin):
             print "address:", self.resultparser.get_address
             print "state is :", self.resultparser.get_state
             print "open ports:", self.resultparser.get_openports
-            print "servers:", self.resultparser.get_servers, "\n"
+            print "servers:"
+            servers = self.resultparser.get_servers
+            for port in servers:
+                print "port :",port
+                print servers[port]
     
-    def set_arg(self, arg1, arg2):
-        if arg1 == "hosts":
-            self.hosts = arg2
-        elif arg1 == "ports":
-            self.ports = arg2
-        elif arg1 == "argments":
-            self.argments = arg2
+    def set_args(self, *args):
+        if len(args) == 2:
+            if args[0] == "hosts":
+                self.hosts = args[1]
+            elif args[0] == "ports":
+                self.ports = args[1]
+            elif args[0] == "argments":
+                self.argments = args[1]

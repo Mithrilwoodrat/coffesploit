@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
-from plugins.importplugin import ImportPlugin
 import importlib
 import sys
+from coffesploit.plugins.pluginmanage.importplugin import ImportPlugin
+
 
 
 class PluginManager(object):
@@ -13,6 +14,7 @@ class PluginManager(object):
         self.current_plugin_name = None
         self.current_plugin_file = None
         self.current_plugin_class = None
+        self.current_plugin_type = None
         self.current_plugin = None
         self.importer = ImportPlugin()
 
@@ -23,20 +25,32 @@ class PluginManager(object):
         plugin_list = self.importer.get_plugins_list()
         if plugin_name in plugin_list:
             self.current_plugin_name = plugin_name
-            self.current_plugin_file, self.current_plugin_class = plugin_list[plugin_name]
+            self.current_plugin_type, self.current_plugin_file, self.current_plugin_class = plugin_list[plugin_name]
         else:
             print 'no such plugin'
 
-    def load_plugin(self,plugin_name):
+    def load_plugin(self,plugin):
         """set path to load plugin
         从importplugin 中获取插件所在绝对路径,使用import_moudle加载
         """
+        if len(plugin.split("/")) == 1:
+            plugin_name = plugin
+        elif len(plugin.split("/")) == 2:
+            plugin_name = plugin.split("/")[1]
+        else:
+            print "no such plugin!"
+            exit(1)
         self.set_current_plugin_name(plugin_name)
         if sys.argv[0] != self.importer.getpath():
-            importfile = "coffesploit.plugins." + self.current_plugin_file[0:-3].lower()
+            importfile = "coffesploit.plugins." + self.current_plugin_type\
+                         + "." +self.current_plugin_file[0:-3].lower()
         else:
-            importfile = self.current_plugin_file[0:-3].lower()
-        mode = importlib.import_module(importfile)
+            importfile = self.current_plugin_type + "." +self.current_plugin_file[0:-3].lower()
+        try:
+            mode = importlib.import_module(importfile)
+        except ImportError:
+            print "can't import : ",importfile
+            exit(1)
         plugin_class = getattr(mode, self.current_plugin_class)
         self.current_plugin = plugin_class()
 

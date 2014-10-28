@@ -24,8 +24,9 @@ class ImportPlugin(object):
             filename = self.path+"config.ini"
             conf = open(filename, "r")
             for line in conf.readlines():
-                plugin_name, plugin_file, plugin_class = line.split(",")
-                self.plugins_list[plugin_name] = plugin_file, plugin_class
+                plugin_type,plugin_name, plugin_file, plugin_class = line.strip().split(",") #if there is \n in line delete it
+                self.plugins_list[plugin_name] = plugin_type, plugin_file, plugin_class
+            conf.close()
         except IOError:
             print ("must have config file")
             print self.path

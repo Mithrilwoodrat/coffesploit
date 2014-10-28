@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 
-class TestPlugin(object):
+class ScanPlugin(object):
     """
     This is the base class for ALL plugins, all plugins should inherit from it
     and implement the following method :
@@ -18,4 +18,7 @@ class TestPlugin(object):
 
     def result(self):
         """ reslut should return a dictionary  """
+        pass
+
+    def set_args(self,*args):
         pass
