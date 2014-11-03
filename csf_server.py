@@ -1,3 +1,4 @@
 # -*- coding: utf-8 -*-
 from server import csfserver
-csfserver.run(debug=True)
+if __name__ == "__main__":
+    csfserver.run(debug=True)
