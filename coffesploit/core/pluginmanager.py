@@ -62,7 +62,9 @@ class PluginManager(object):
     def plugin_result(self):
         """get the result of the plugin"""
         if self.current_plugin is not None:
-            self.current_plugin.result()
+            return self.current_plugin.result()
+        print self.current_plugin_name,"Reslut is None"
+        return self.current_plugin_name,"Reslut is None"
 
     def plugin_status(self):
-        self.current_plugin.status()
+        return self.current_plugin.status()

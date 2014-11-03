@@ -30,7 +30,9 @@ class Coffesploit(object):
             print "ip:",self.target.getrhost(),"url:",self.target.geturl()
         if arg == "status":
             if self.pluginmanager.current_plugin is not None:
-                self.pluginmanager.plugin_status()
+                status = self.pluginmanager.plugin_status()
+                for arg in status:
+                    print arg,":",status[arg]
         if arg == "version":
             print "Currnt Version:",self.version()
         if arg == "plugins":
@@ -43,10 +45,18 @@ class Coffesploit(object):
         self.pluginmanager.plugin_run()
         self.pluginmanager.plugin_result()
 
-    def main_help (self):
+    def main_help(self):
         return self.helper.main_help()
-    def plugin_list (self):
+
+    def plugin_list(self):
         return self.pluginmanager.importer.get_plugins_list()
+
+    def current_plugin_name(self):
+        return self.pluginmanager.current_plugin_name
+
+    def current_plugin_type(self):
+        return self.pluginmanager.current_plugin_type
+
     def help(self,arg):
         """show help info of t"""
         if arg == "target":
@@ -55,6 +65,7 @@ class Coffesploit(object):
             self.helper.help_show()
         if arg == "use":
             self.helper.help_use()
+
     def exit(self):
         exit(0)
     def version(self):

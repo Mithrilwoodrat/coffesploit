@@ -1,0 +1,65 @@
+<{% extends "base.html" %}
+{% block content %}
+<div class="accordion" id="accordion-931408">
+    <div class="accordion-group">
+        <div class="accordion-heading"> <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion-931408" href="#accordion-element-499522" contenteditable="false">
+            <h1 >Scan</h1></a>
+        </div>
+        <div id="accordion-element-499522" class="accordion-body in collapse" style="height: auto;">
+            <div class="accordion-inner" contenteditable="false">
+                {% if scan_plugins %}
+                <div class="btn-group-vertical">
+                {% for plugin in scan_plugins %}
+                    <div class="btn-group btn-group-lg">
+                        <button type="button" id="{{plugin}}" class="btn btn-default">{{plugin}}</button>
+                    </div>
+                {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="accordion-group">
+        <div class="accordion-heading"> <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion-931408" href="#accordion-element-837332" contenteditable="false">
+            <h1>Exploit</h1></a> </div>
+        <div id="accordion-element-837332" class="accordion-body collapse" style="height: 0px;">
+            <div class="accordion-inner" contenteditable="false"> <h2>No such plugin</h2> </div>
+        </div>
+    </div>
+</div>
+
+<div class="accordion" id="accordion-177339">
+    <div class="accordion-group">
+        <div class="accordion-heading"> <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion-177339" href="#accordion-element-545509" contenteditable="false">
+            <h1>Payloads</h1></a> </div>
+        <div id="accordion-element-545509" class="accordion-body collapse" style="height: 0px;">
+            <div class="accordion-inner" contenteditable="false"> <h2>No such plugin</h2> </div>
+        </div>
+    </div>
+</div>
+
+
+<h3 id=current_plugin></h3>
+
+
+<script src="/static/jquery/jquery.min.js"></script>
+<script type=text/javascript>
+  $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+</script>
+<script type=text/javascript>
+$(function(){
+  $("button.btn").each(function(){
+  $(this).bind("click", function() {
+    //alert($(this).text());
+     $.getJSON($SCRIPT_ROOT + '/_set_plugin', {
+        plugin: $(this).text()
+      }, function(data) {
+        $("#current_plugin").text("Current Plugin:"+data.plugin);
+        location.href = $SCRIPT_ROOT + '/plugin/' +data.plugin;
+      });
+      return false;
+     });
+  });
+  });
+</script>
+{% endblock %}

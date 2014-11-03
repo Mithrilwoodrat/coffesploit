@@ -1,6 +1,11 @@
 coffesploit is an automated penetration testing framework
 
-writing by Python,need nmap installed
+##Required
+* Python2.7
+* flask
+* python-nmap
+* flask
 
-using a mode named "nmap" to parse nmap result in Python
-You can find it using "easy_install nmap"
+##Usage
+* python csf_server.py #run web ui
+* python csf_console.py #run console ui

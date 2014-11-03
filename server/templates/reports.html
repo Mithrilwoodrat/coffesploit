@@ -1,0 +1,9 @@
+<{% extends "base.html" %}
+{% block content %}
+{% if result %}
+        {{result}}
+{% else %}
+        <strong> argments wrong,result is None!</strong>
+        {{link}}
+{% endif %}
+{% endblock %}

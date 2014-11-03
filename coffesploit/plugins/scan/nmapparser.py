@@ -16,9 +16,7 @@ class NmapParser(ScanPlugin):
         self.resultparser = ResultPlugin()
         
     def args_status(self):
-        print "hosts:", self.hosts, "\n"
-        print "ports:", self.ports, "\n"
-        print "argments:", self.argments, "\n"
+        return {"hosts": self.hosts, "ports": self.ports, "argments": self.argments}
         
     def start_scan(self):
         if self.hosts is not None:
@@ -38,7 +36,7 @@ class NmapParser(ScanPlugin):
         self.start_scan()
         
     def status(self):
-        self.args_status()
+        return self.args_status()
 
     def result(self):
         if self.scan_result() is not None:
@@ -56,8 +54,9 @@ class NmapParser(ScanPlugin):
             print "servers:"
             servers = self.resultparser.get_servers
             for port in servers:
-                print "port :",port
+                print "port :", port
                 print servers[port]
+        return self.scan_result()
     
     def set_args(self, *args):
         if len(args) == 2:
