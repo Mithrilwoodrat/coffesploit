@@ -54,8 +54,6 @@ def plugin(plugin_name=None):
             plu_arg = str(plu_arg)
             if plu_arg is not None and plu_arg != "":
                 main.set(str(arg),plu_arg)
-        flash("runing please wait!")
-        main.pluginmanager.current_plugin.run()
         return redirect(url_for('reports'))
     return render_template("plugin.html", title=plugin_name,
                            plugin_name=plugin_name,
@@ -64,6 +62,8 @@ def plugin(plugin_name=None):
 
 @csfserver.route('/reports')
 def reports():
+    flash("Plugin is runing please wait!!!!")
+    main.pluginmanager.current_plugin.run()
     main.pluginmanager.plugin_result()
     return render_template('reports.html',
                            title=main.current_plugin_name(),
