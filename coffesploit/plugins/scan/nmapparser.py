@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 from nmap import PortScanner
 #use python nmap parse lib
-from coffesploit.plugins.pluginmanage.scanplugin import ScanPlugin
-from coffesploit.plugins.pluginmanage.resultplugin import ResultPlugin
+from coffesploit.core.pluginmanage.scanplugin import ScanPlugin
+from coffesploit.core.pluginmanage.resultplugin import ResultPlugin
 
 
 class NmapParser(ScanPlugin):

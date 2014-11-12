@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import importlib
 import sys
-from coffesploit.plugins.pluginmanage.importplugin import ImportPlugin
+from coffesploit.core.pluginmanage.importplugin import ImportPlugin
 
 
 
@@ -43,9 +43,9 @@ class PluginManager(object):
         self.set_current_plugin_name(plugin_name)
         if sys.argv[0] != self.importer.getpath():
             importfile = "coffesploit.plugins." + self.current_plugin_type\
-                         + "." +self.current_plugin_file[0:-3].lower()
+                         + "." +self.current_plugin_file[0:-3]
         else:
-            importfile = self.current_plugin_type + "." +self.current_plugin_file[0:-3].lower()
+            importfile = self.current_plugin_type + "." +self.current_plugin_file[0:-3]
         try:
             mode = importlib.import_module(importfile)
         except ImportError:

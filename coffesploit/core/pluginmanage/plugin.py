@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 
-class ScanPlugin(object):
+class Plugin(object):
     """
     This is the base class for ALL plugins, all plugins should inherit from it
     and implement the following method :

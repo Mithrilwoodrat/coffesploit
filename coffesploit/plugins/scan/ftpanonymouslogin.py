@@ -1,7 +1,7 @@
 #/usr/bin/python
 import ftplib
-from coffesploit.plugins.pluginmanage.scanplugin import ScanPlugin
-from coffesploit.plugins.pluginmanage.resultplugin import ResultPlugin
+from coffesploit.core.pluginmanage.scanplugin import ScanPlugin
+from coffesploit.core.pluginmanage.resultplugin import ResultPlugin
 
 
 class FtpAnonymousLogin(ScanPlugin):
@@ -25,6 +25,7 @@ class FtpAnonymousLogin(ScanPlugin):
             return False
 
     def run(self):
+        super(FtpAnonymousLogin, self).run()
         if self.anonlogin(self.host):
             self.isvulnerable = True
 
