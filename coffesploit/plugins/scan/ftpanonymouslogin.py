@@ -30,14 +30,16 @@ class FtpAnonymousLogin(ScanPlugin):
             self.isvulnerable = True
 
     def result(self):
-        if self.isvulnerable:
+        if self.isvulnerable is True:
             print '\n[+]' + str(self.host) + 'FTP Anonymous\
             Login Succeeded.'
             return 'vulnerable'
-        else:
+        elif self.isvulnerable is False and self.host is not None:
             print '\n[-] ' + str(self.host) + 'FTP Anonymous\
             Login Failed. '
             return 'not vulnerable'
+        else:
+            return None
 
     def set_args(self, *args):
         if len(args) == 2:

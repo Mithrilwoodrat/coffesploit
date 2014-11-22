@@ -21,9 +21,22 @@
     </div>
     <div class="accordion-group">
         <div class="accordion-heading"> <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion-931408" href="#accordion-element-837332" contenteditable="false">
-            <h1>Exploit</h1></a> </div>
+            <h1>Exploit</h1></a>
+        </div>
         <div id="accordion-element-837332" class="accordion-body collapse" style="height: 0px;">
-            <div class="accordion-inner" contenteditable="false"> <h2>No such plugin</h2> </div>
+            <div class="accordion-inner" contenteditable="false">
+                {% if exploit_plugins %}
+                <div class="btn-group-vertical">
+                {% for exploit_plugin in exploit_plugins %}
+                    <div class="btn-group btn-group-lg">
+                        <button type="button" id="{{exploit_plugin}}" class="btn btn-default">{{exploit_plugin}}</button>
+                    </div>
+                {% endfor %}
+                </div>
+                {% else %}
+                <h2>No Such Plugin</h2>
+                {% endif %}
+            </div>
         </div>
     </div>
 </div>
@@ -51,11 +64,11 @@ $(function(){
   $("button.btn").each(function(){
   $(this).bind("click", function() {
     //alert($(this).text());
-     $.getJSON($SCRIPT_ROOT + '/_set_plugin', {
+     $.getJSON($SCRIPT_ROOT + '/set_plugin', {
         plugin: $(this).text()
       }, function(data) {
         $("#current_plugin").text("Current Plugin:"+data.plugin);
-        location.href = $SCRIPT_ROOT + '/plugin/' +data.plugin;
+        location.href = $SCRIPT_ROOT + '/plugin';
       });
       return false;
      });
