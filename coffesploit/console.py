@@ -1,23 +1,33 @@
 # -*- coding: utf-8 -*-
 import os
+import sys
 from coffesploit.core.coffesplot import Coffesploit
 
 
 class Console(object):
     def __init__(self):
         self.main = Coffesploit()
+        self.history = []
         self.cmd = None
+
+    def get_input(self):
+        sys.stdout.write(self.main.pluginmanager.current_plugin_type + "/" +
+        self.main.pluginmanager.current_plugin_name + '>')
+        self.cmd = sys.stdin.readline().strip()
+        self.history.append(self.cmd)
 
     def start(self):
         self.banner()
         while 1:
             try:
-                #show plugin name in shell
+                # show plugin name in shell
                 if self.main.pluginmanager.current_plugin_name:
                     self.cmd = raw_input(self.main.pluginmanager.current_plugin_type + "/" +
                                          self.main.pluginmanager.current_plugin_name + '>')
+                    self.history.append(self.cmd)
                 else:
                     self.cmd = raw_input('>')
+                    self.history.append(self.cmd)
                 self.parsecmd(self.cmd)
             except EOFError:
                 self.exit()
@@ -84,7 +94,7 @@ class Console(object):
         elif cmd == "banner":
             self.banner()
         elif cmd == "run":
-            self.main.run()
+            print self.main.run()
         elif len(cmd.split(" ")) >= 2:
             args = cmd.split(" ")
             command = args[0]

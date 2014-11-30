@@ -13,7 +13,5 @@ class Target(object):
         return  self.rhost
     def seturl(self,url):
         self.url = url
-    def geturl(self):
-        return self.url
 
 
