@@ -18,5 +18,6 @@ class DBManager(object):
         self.session.add(new_target)
         self.session.commit()
 
-    def query_target(self,host):
-        return self.session.query(Target).filter_by(host=host).all()
+    def query_target(self, host):
+        target = self.session.query(Target).filter_by(host=host).first()
+        return {target.host : target.result}

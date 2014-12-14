@@ -12,7 +12,7 @@ class Console(object):
 
     def get_input(self):
         sys.stdout.write(self.main.pluginmanager.current_plugin_type + "/" +
-        self.main.pluginmanager.current_plugin_name + '>')
+                         self.main.pluginmanager.current_plugin_name + '>')
         self.cmd = sys.stdin.readline().strip()
         self.history.append(self.cmd)
 
@@ -80,7 +80,7 @@ class Console(object):
 
     def parsecmd(self, cmd):
         if cmd == "help":
-            self.main.main_help()
+            self.main.help()
         elif cmd == "show":
             self.main.help("show")
         elif cmd == "exit":
@@ -98,14 +98,8 @@ class Console(object):
         elif len(cmd.split(" ")) >= 2:
             args = cmd.split(" ")
             command = args[0]
-            if command == "target" and len(args) == 3:
-                if args[1] == "-u":
-                    self.main.set_target(url=args[2])
-                elif args[1] == "-r":
-                    self.main.set_target(rhost=args[2])
-                else:
-                    print "error"
-                    self.main.help("target")
+            if command == "target":
+                    self.main.set_target(args[1])
             if command == "set":
                 if len(args) == 3:
                     self.main.set(args[1], args[2])
@@ -117,9 +111,7 @@ class Console(object):
             elif command == "show":
                 self.main.show(args[1])
             elif command == "use":
-                #to load plugin
+                # to load plugin
                 self.main.use(args[1])
         else:
             os.system(cmd)
-
-
