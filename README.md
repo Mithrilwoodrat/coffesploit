@@ -15,6 +15,9 @@ coffesploit is an automated penetration testing framework
 * python-nmap==0.3.4
 * wsgiref==0.1.2
 
+##Install
+* pip install -r requirements.txt
+* In arch linux pip2 install -r requirements.txt
 ##Usage
 * python csf_server.py #run web ui
 * ipython csf_console.py #run console ui
