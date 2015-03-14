@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
+import os
 from server import csfserver
 from flask import render_template, flash, jsonify, request, redirect, url_for
+from config import UPLOAD_FOLDER,allowed_file
+from werkzeug.utils import secure_filename
 from server import main
 
 
@@ -17,22 +20,38 @@ def about():
 
 @csfserver.route('/config')
 def config():
-    plugin_list = main.plugin_list()
+    plugin_list = main.plugin_list
     scan_plugins = []
     exploit_plugins = []
-    payloads_plugins = []
+    payload_plugins = []
     for plugin in plugin_list:
         if plugin_list[plugin][0] == "scan":  # type == scan
             scan_plugins.append(plugin)
         elif plugin_list[plugin][0] == "exploit":  # type == exploit
             exploit_plugins.append(plugin)
-        elif plugin_list[plugin][0] == "payloads":  # type == payloads
-            payloads_plugins.append(plugin)
+        elif plugin_list[plugin][0] == "payload":  # type == payload
+            payload_plugins.append(plugin)
     flash("Click button to choose plugin")
     return render_template("config.html", title="Choose Plugin",
                            scan_plugins=scan_plugins,
                            exploit_plugins=exploit_plugins,
+                           payload_plugins=payload_plugins,
                            )
+
+@csfserver.route('/setting')
+def setting():
+    return render_template('setting.html',title="Upload your plugin")
+
+@csfserver.route('/upload/<plugin_type>', methods=['POST', 'GET'])
+def upload(plugin_type):
+    if request.method == "POST":
+        file = request.files['file']
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            file.save(os.path.join(UPLOAD_FOLDER, plugin_type+'/'+filename))
+    return render_template('setting.html',
+                           title=plugin_type+" plugin upload",
+                           plugin_type=plugin_type)
 
 
 @csfserver.route('/set_plugin', methods=['GET'])
@@ -40,7 +59,6 @@ def set_plugin():
     plugin_name = request.args.get('plugin', 0, type=str)
     main.use(plugin_name)
     return jsonify(plugin=plugin_name)
-
 
 @csfserver.route('/plugin', methods=['GET', 'POST'])
 def plugin():
@@ -80,8 +98,8 @@ def run_plugin():
 
 @csfserver.route('/reports')
 def reports():
-    if main.pluginmanager.current_plugin is  None:
-        redirect(url_for('/config'))
+    if main.pluginmanager.current_plugin_name is None:
+        redirect('/index')
     else:
         flash("Plugin is runing please wait!!!!")
         main.pluginmanager.current_plugin.run()
@@ -97,6 +115,7 @@ def add_numbers():
     a = request.args.get('a', 0, type=int)
     b = request.args.get('b', 0, type=int)
     return jsonify(result=a + b)
+
 
 @csfserver.route('/test')
 def test():

@@ -32,6 +32,9 @@
                         <button type="button" id="{{exploit_plugin}}" class="btn btn-default">{{exploit_plugin}}</button>
                     </div>
                 {% endfor %}
+                    <div class="btn-group btn-group-lg">
+                        <button type="button" id="exploit_plugin" class="btn btn-default">Upload Exploit Plugin</button>
+                    </div>
                 </div>
                 {% else %}
                 <h2>No Such Plugin</h2>
@@ -44,13 +47,27 @@
 <div class="accordion" id="accordion-177339">
     <div class="accordion-group">
         <div class="accordion-heading"> <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion-177339" href="#accordion-element-545509" contenteditable="false">
-            <h1>Payloads</h1></a> </div>
+            <h1>Payload</h1></a> </div>
         <div id="accordion-element-545509" class="accordion-body collapse" style="height: 0px;">
-            <div class="accordion-inner" contenteditable="false"> <h2>No such plugin</h2> </div>
+            <div class="accordion-inner" contenteditable="false">
+                {% if payload_plugins %}
+                <div class="btn-group-vertical">
+                {% for payload_plugin in exploit_plugins %}
+                    <div class="btn-group btn-group-lg">
+                        <button type="button" id="{{payloads_plugin}}" class="btn btn-default">{{payload_plugin}}</button>
+                    </div>
+                {% endfor %}
+                    <div class="btn-group btn-group-lg">
+                        <button type="button" id="exploit_plugin" class="btn btn-default">Upload Payload Plugin</button>
+                    </div>
+                </div>
+                {% else %}
+                <h2>No Such Plugin</h2>
+                {% endif %}
+                </div>
         </div>
     </div>
 </div>
-
 
 <h3 id=current_plugin></h3>
 

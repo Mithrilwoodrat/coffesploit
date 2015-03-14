@@ -44,7 +44,10 @@ class Coffesploit(object):
                 print self.plugin_list[plugin][0], " : ", plugin
 
     def use(self, arg):
-        self.pluginmanager.load_plugin(arg)
+        if arg in self.plugin_list:
+            self.pluginmanager.load_plugin(arg)
+        else:
+            print "plugin is not existed"
 
     def run(self):
         self.pluginmanager.plugin_run()
