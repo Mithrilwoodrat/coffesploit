@@ -3,7 +3,6 @@ import ftplib
 from coffesploit.core.pluginmanage.scanplugin import ScanPlugin
 from coffesploit.core.pluginmanage.resultplugin import ResultPlugin
 
-
 class FtpAnonymousLogin(ScanPlugin):
     def __init__(self):
         self.tool_name = "FtpAnonymousLogin"
@@ -13,6 +12,7 @@ class FtpAnonymousLogin(ScanPlugin):
         self.isvulnerable = False
 
     def status(self):
+        super(FtpAnonymousLogin,self).status()
         return  {'host': self.host}
 
     def anonlogin(self, hostname):
@@ -31,13 +31,11 @@ class FtpAnonymousLogin(ScanPlugin):
 
     def result(self):
         if self.isvulnerable is True:
-            print '\n[+]' + str(self.host) + 'FTP Anonymous\
+            return '[+]' + str(self.host) + 'FTP Anonymous\
             Login Succeeded.'
-            return 'vulnerable'
         elif self.isvulnerable is False and self.host is not None:
-            print '\n[-] ' + str(self.host) + 'FTP Anonymous\
+            return '[-] ' + str(self.host) + 'FTP Anonymous\
             Login Failed. '
-            return 'not vulnerable'
         else:
             return None
 

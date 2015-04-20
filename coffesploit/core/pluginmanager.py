@@ -2,8 +2,7 @@
 import importlib
 import sys
 from coffesploit.core.pluginmanage.importplugin import ImportPlugin
-
-
+from coffesploit.core.logmanager import logmanager
 
 class PluginManager(object):
     """该类负责加载插件,提供插件运行和插件结果函数.
@@ -29,10 +28,11 @@ class PluginManager(object):
         else:
             print 'no such plugin'
 
-    def load_plugin(self,plugin):
+    def load_plugin(self, plugin):
         """set path to load plugin
         从importplugin 中获取插件所在绝对路径,使用import_moudle加载
         """
+        plugin_name = ""
         if len(plugin.split("/")) == 1:
             plugin_name = plugin
         elif len(plugin.split("/")) == 2:
@@ -49,7 +49,8 @@ class PluginManager(object):
         try:
             mode = importlib.import_module(importfile)
         except ImportError:
-            print "can't import : ",importfile
+            mode = None
+            logmanager.puttolog("can't import : "+importfile)
             exit(1)
         plugin_class = getattr(mode, self.current_plugin_class)
         self.current_plugin = plugin_class()
@@ -63,8 +64,8 @@ class PluginManager(object):
         """get the result of the plugin"""
         if self.current_plugin is not None:
             return self.current_plugin.result()
-        print self.current_plugin_name,"Reslut is None"
-        return self.current_plugin_name,"Reslut is None"
+        else:
+            return self.current_plugin_name,"Reslut is None"
 
     def plugin_status(self):
         return self.current_plugin.status()

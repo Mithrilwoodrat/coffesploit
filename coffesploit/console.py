@@ -94,7 +94,8 @@ class Console(object):
         elif cmd == "banner":
             self.banner()
         elif cmd == "run":
-            print self.main.run()
+            self.main.run()
+            print self.main.get_result()
         elif len(cmd.split(" ")) >= 2:
             args = cmd.split(" ")
             command = args[0]

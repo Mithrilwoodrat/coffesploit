@@ -21,3 +21,6 @@ class DBManager(object):
     def query_target(self, host):
         target = self.session.query(Target).filter_by(host=host).first()
         return {target.host : target.result}
+
+#instance
+dbmanager = DBManager()

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-
+from coffesploit.core.logmanager import logmanager
 
 class Plugin(object):
     """
@@ -8,13 +8,13 @@ class Plugin(object):
     status result  run """
 
     def __init__(self, plugin_name):
-        self.plugin_name = plugin_name #pass in plugin_name in super().__init__ function
+        self.plugin_name = plugin_name #  pass in plugin_name in super().__init__ function
 
     def run(self):
-        print 'using plugin:', self.plugin_name
+        logmanager.puttolog('using plugin:'+self.plugin_name)
 
     def status(self):
-        print 'plugin:', self.plugin_name, 'status\n'
+        logmanager.puttolog('plugin:'+ self.plugin_name+ 'status')
 
     def result(self):
         """ reslut should return a dictionary  """

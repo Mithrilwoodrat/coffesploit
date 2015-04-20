@@ -2,7 +2,8 @@
 from coffesploit.core.target import Target
 from coffesploit.core.helpmanager import HelpManager
 from coffesploit.core.pluginmanager import PluginManager
-from coffesploit.core.dbmanager import DBManager
+from coffesploit.core.dbmanager import dbmanager
+from coffesploit.core.logmanager import logmanager
 
 __Version__ = "0.2test"
 
@@ -16,7 +17,10 @@ class Coffesploit(object):
         self.pluginmanager = PluginManager()
         self.helper = HelpManager()
         self.plugin_list = self.get_plugin_list()
-        self.dbmanager = DBManager()
+
+    @staticmethod
+    def version():
+        return __Version__
 
     def config_from(self, basedir, db_uri):
         self.basedir = basedir
@@ -31,7 +35,7 @@ class Coffesploit(object):
     def show(self, arg):
         if arg == "target":
             if self.target.getrhost() is not None:
-                print "ip:", self.target.getrhost(), self.dbmanager.query_target(self.target.getrhost())
+                print "ip:", self.target.getrhost(), dbmanager.query_target(self.target.getrhost())
         if arg == "status":
             if self.pluginmanager.current_plugin is not None:
                 status = self.pluginmanager.plugin_status()
@@ -51,7 +55,13 @@ class Coffesploit(object):
 
     def run(self):
         self.pluginmanager.plugin_run()
-        return self.pluginmanager.plugin_result()
+        logmanager.puttolog(self.pluginmanager.plugin_result())
+
+    def get_result(self):
+        result = ""
+        while (not logmanager.log.empty()):
+            result += '\n'+logmanager.getlog()
+        return result
 
     def get_plugin_list(self):
         return self.pluginmanager.importer.get_plugins_list()
@@ -69,5 +79,3 @@ class Coffesploit(object):
     def exit(self):
         exit(0)
 
-    def version(self):
-        return __Version__
