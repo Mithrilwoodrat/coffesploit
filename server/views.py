@@ -63,6 +63,7 @@ def set_plugin():
 @csfserver.route('/plugin', methods=['GET', 'POST'])
 def plugin():
     plugin_name = main.current_plugin_name()
+    plugin_type = main.current_plugin_type()
     print "Using Plugin:", plugin_name
     status = None
     if main.pluginmanager.current_plugin is not None:
@@ -79,7 +80,7 @@ def plugin():
             if plu_arg is not None and plu_arg != "":
                 main.set(str(arg), plu_arg)
         return redirect(url_for('reports'))
-    return render_template("plugin.html", title=plugin_name,
+    return render_template("plugin.html", title=plugin_type+"/"+plugin_name,
                            plugin_name=plugin_name,
                            status=status)
 
