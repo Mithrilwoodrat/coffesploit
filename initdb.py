@@ -8,6 +8,7 @@ from config import SQLALCHEMY_DATABASE_URI
 
 engine = create_engine(SQLALCHEMY_DATABASE_URI, echo=True)
 Base = declarative_base()
+
 class Target(Base):
     __tablename__ = 'targets'
     id = Column(Integer, Sequence('user_id_seq'), primary_key=True)
@@ -17,4 +18,5 @@ class Target(Base):
     def __repr__(self):
         return "<Target(host='%s', result='%s')>" % (
                              self.host,self.result)
+
 Base.metadata.create_all(engine)
