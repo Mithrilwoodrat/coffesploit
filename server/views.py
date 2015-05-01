@@ -12,6 +12,9 @@ from server import main
 def index():
     return render_template("index.html")
 
+@csfserver.route('/base')
+def base():
+    return render_template("new_base.html",title="Welcome to Coffesploit")
 
 @csfserver.route('/about')
 def about():
@@ -121,3 +124,18 @@ def add_numbers():
 @csfserver.route('/test')
 def test():
     return render_template('test.html')
+
+@csfserver.route('/plugin_list')
+def plugin_list():
+    plugin_list = main.plugin_list
+    scan_plugins = []
+    exploit_plugins = []
+    payload_plugins = []
+    for plugin in plugin_list:
+        if plugin_list[plugin][0] == "scan":  # type == scan
+            scan_plugins.append(plugin)
+        elif plugin_list[plugin][0] == "exploit":  # type == exploit
+            exploit_plugins.append(plugin)
+        elif plugin_list[plugin][0] == "payload":  # type == payload
+            payload_plugins.append(plugin)
+    return jsonify({'scan' : scan_plugins,'exploit' : exploit_plugins,'payload': payload_plugins})
