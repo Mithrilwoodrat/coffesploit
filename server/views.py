@@ -10,11 +10,11 @@ from server import main
 @csfserver.route('/')
 @csfserver.route('/index')
 def index():
-    return render_template("index.html")
+    return render_template("index.html", title="Welcome to Coffesploit")
 
 @csfserver.route('/base')
 def base():
-    return render_template("new_base.html",title="Welcome to Coffesploit")
+    return render_template("base.html")
 
 @csfserver.route('/about')
 def about():
@@ -63,8 +63,10 @@ def set_plugin():
     main.use(plugin_name)
     return jsonify(plugin=plugin_name)
 
-@csfserver.route('/plugin', methods=['GET', 'POST'])
-def plugin():
+@csfserver.route('/plugin/<plugin_name>', methods=['GET', 'POST'])
+def plugin(plugin_name):
+    if request.method == 'GET':
+        main.use(plugin_name)
     plugin_name = main.current_plugin_name()
     plugin_type = main.current_plugin_type()
     print "Using Plugin:", plugin_name
@@ -73,8 +75,6 @@ def plugin():
         status = main.pluginmanager.plugin_status()
     if status is None:
         flash("error while parse status")
-    else:
-        flash("Please set plugin's argments")
     if request.method == 'POST':
         for arg in status:
             print arg, ":", request.form.get(arg)
@@ -90,15 +90,15 @@ def plugin():
 @csfserver.route('/run_plugin', methods=['GET','POST'])
 def run_plugin():
     status = main.pluginmanager.plugin_status()
-    #if request.method == 'POST':
-    for arg in status:
-        print arg, ":", request.args.get(arg)
-        plu_arg = request.args.get(arg)
-        plu_arg = str(plu_arg)
-        if plu_arg is not None and plu_arg != "":
-            main.set(str(arg), plu_arg)
-    main.pluginmanager.current_plugin.run()
-    return jsonify(status=status)
+    if request.method == 'POST':
+        for arg in status:
+            print arg, ":", request.form.get(arg)
+            plu_arg = request.form.get(arg)
+            plu_arg = str(plu_arg)
+            if plu_arg is not None and plu_arg != "":
+                main.set(str(arg), plu_arg)
+        main.pluginmanager.current_plugin.run()
+    return redirect(url_for('reports'))
 
 @csfserver.route('/reports')
 def reports():
@@ -106,24 +106,13 @@ def reports():
         redirect('/index')
     else:
         flash("Plugin is runing please wait!!!!")
-        main.pluginmanager.current_plugin.run()
-        main.pluginmanager.plugin_result()
+        print main.pluginmanager.plugin_result()
     return render_template('reports.html',
                            title=main.current_plugin_name(),
                            result=main.pluginmanager.plugin_result(),
                            )
 
 
-@csfserver.route('/_add_numbers')
-def add_numbers():
-    a = request.args.get('a', 0, type=int)
-    b = request.args.get('b', 0, type=int)
-    return jsonify(result=a + b)
-
-
-@csfserver.route('/test')
-def test():
-    return render_template('test.html')
 
 @csfserver.route('/plugin_list')
 def plugin_list():
