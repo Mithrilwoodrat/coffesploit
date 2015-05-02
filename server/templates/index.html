@@ -1,20 +1,4 @@
 {% extends "base.html" %}
 {% block content %}
-<h1 class="text-center">
-    <strong> Welcome to Coffesploit </strong>
-</h1>
-<h2 class="text-center">
-    <a href="/config"> <strong>Choose a plugin first!</strong></a>
-
-</h2>
-
 <p class="text-center"><img src="static/logo.jpg"></p>
-<script src="static/jquery/jquery.min.js"></script>
-<script>
-$(document).ready(function(){
-  $("p").click(function(){
-  $(this).hide();
-  });
-});
-</script>
 {% endblock %}
