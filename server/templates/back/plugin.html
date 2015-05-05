@@ -1,0 +1,44 @@
+<{% extends "base.html" %}
+{% block content %}
+<form class="form-horizontal" role="form" method="post" action="/plugin">
+{% if status %}
+{% for arg in status %}
+    <div class="form-group">
+      <label class="col-sm-2 control-label">{{arg}}</label>
+      <div class="col-sm-10">
+          <input type="text" placeholder="{{status[arg]}}"  id="{{arg}}" name="{{arg}}">
+          <!-- <span class="help-block" contenteditable="true">这里填写帮助信息.</span>-->
+      </div>
+    </div>
+{% endfor %}
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+    <button  class="btn">提交</button>
+        </div>
+    </div>
+
+</form>
+{% else %}
+        <h1 class="text-center"><strong>Error!</strong></h1>
+{% endif %}
+<script src="/static/jquery/jquery.min.js"></script>
+<script type=text/javascript>
+  $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+</script>
+<script type=text/javascript>
+$(function(){
+  $("button.btn").each(function(){
+  $(this).bind("click", function() {
+    alert($('form').serialize());
+     $.getJSON($SCRIPT_ROOT + '/run_plugin', {
+        $('form').serialize();
+      }, function(data) {
+        //$("#current_plugin").text("Current Plugin:"+data.plugin);
+        location.href = $SCRIPT_ROOT + '/reports';
+      });
+      return false;
+     });
+  });
+  });
+</script>
+{% endblock %}
