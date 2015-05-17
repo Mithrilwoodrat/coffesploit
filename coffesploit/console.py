@@ -96,6 +96,10 @@ class Console(object):
         elif cmd == "run":
             self.main.run()
             print self.main.get_result()
+        elif cmd == "update":
+            print 'start update'
+            self.main.update()
+            print self.main.get_result()
         elif len(cmd.split(" ")) >= 2:
             args = cmd.split(" ")
             command = args[0]

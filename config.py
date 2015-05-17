@@ -10,6 +10,7 @@ PWDFILE_URI = os.path.join(__basedir + "/coffesploit/data", __pwdfilename)
 SQLALCHEMY_DATABASE_URI = "sqlite:///" + os.path.join(__basedir+"/coffesploit/db",__dbname)
 CSRF_ENABLE = True
 SECRET_KEY = "coffesploit"
+DES_KEY = "12345678"
 UPLOAD_FOLDER = os.path.join(__basedir + "/coffesploit/plugins/")
 ALLOWED_EXTENSIONS = set(['py'])
 

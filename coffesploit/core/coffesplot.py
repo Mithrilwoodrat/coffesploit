@@ -4,6 +4,8 @@ from coffesploit.core.helpmanager import HelpManager
 from coffesploit.core.pluginmanager import PluginManager
 from coffesploit.core.dbmanager import dbmanager
 from coffesploit.core.logmanager import logmanager
+from coffesploit.core.updatemanager import UpdateManager
+
 
 __Version__ = "0.2test"
 
@@ -17,6 +19,7 @@ class Coffesploit(object):
         self.pluginmanager = PluginManager()
         self.helper = HelpManager()
         self.plugin_list = self.get_plugin_list()
+        self.updatemanager = UpdateManager()
 
     @staticmethod
     def version():
@@ -75,6 +78,15 @@ class Coffesploit(object):
     def help(self, arg=None):
         """show help info of arg"""
         self.helper.gethelp(arg)
+
+    def update(self):
+        self.updatemanager.fetch_update_list()
+        print 'get update list', self.updatemanager.get_update_list()
+        if self.updatemanager.get_update_list() is not []:
+            self.updatemanager.download_exps()
+        else:
+            print 'update failed'
+            logmanager.puttolog('update failed')
 
     def exit(self):
         exit(0)
