@@ -28,3 +28,7 @@ coffesploit is an automated penetration testing framework
 
 ##Screenshots 
   ![image](https://github.com/Mithrilwoodrat/coffesploit/blob/master/screenshots/1.png)
+  
+  ![image](https://github.com/Mithrilwoodrat/coffesploit/blob/master/screenshots/2.png)
+  
+  ![image](https://github.com/Mithrilwoodrat/coffesploit/blob/master/screenshots/3.png)
