@@ -1,0 +1,120 @@
+{% extends "base.html" %}
+{% block content %}
+    <div class="container">
+        <h2>新建扫描</h2>
+        <p>在插件列表中选择插件使用</p>
+        <div id="plugin-list" class="col-md-3"></div>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <p id="plugin_name" style="display: none"></p>
+                <div class="modal-header">
+                </div>
+                <div class="modal-body">
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" onclick="submit();">submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+    var $tree = $('#plugin-list');
+        $.getJSON(
+                '/plugin_list',
+                function(data) {
+                    var plugin_list = [
+                        {
+                            label:'scan',
+                            children:[
+                            ]
+                        },
+                        {
+                            label:'pyload',
+                            children:[
+                            ]
+                        },
+                        {
+                            label:'exploit',
+                            children:[
+                            ]
+                        }
+                    ];
+                    $.each(data, function (name, val){
+                        var i,id=0;
+                        if (name == "scan"){
+                            for (i=0;i<val.length;i++){
+                                plugin_list[0].children.push({label:val[i],id:id++});
+                            }
+                        }
+                        else if (name == "pyload"){
+                            for (i=0;i<val.length;i++){
+                                plugin_list[1].children.push({label:val[i],id:id++});
+                            }
+                        }
+                        else if (name == "exploit"){
+                            for (i=0;i<val.length;i++){
+                                plugin_list[2].children.push({label:val[i],id:id++});
+                            }
+                        }
+                    });
+
+                    $tree.tree({
+                        data: plugin_list,
+                        autoOpen: true
+                    });
+                }
+        );
+    $tree.bind('tree.click',function(e) {
+        if (e.node.getLevel() == 2)
+        {
+            var name = e.node.name;
+            var modal =  $('#myModal');
+
+            body = "";
+            res = $.getJSON('/plugin/'+name, function()
+                {
+                    resJSON = res.responseJSON;
+                    if (resJSON){
+                        $('.modal-header').html(resJSON['title']);
+                        $('#plugin_name').html(resJSON['plugin_name']);
+                        body += "<div class=\"input-group\">";
+                        $.each(resJSON.status,function(name,placeholder) {
+                            body += "<label>" + name +"</label>";
+                            if (placeholder){
+                                body += "<input class='form-control' type='text' placeholder='" + placeholder + "' name='" + name +"'><br>";
+                            }
+                            else {
+                                body += "<input class='form-control' type='text' placeholder='"  + "' name='" + name +"'><br>";
+                            }
+                        });
+                        body += "</div>";
+                        $('.modal-body').html(body);
+                        modal.modal('show');
+                    }
+                    else
+                        alert("get status error");
+            });
+        }
+    });
+    function submit() {
+        var status = {};
+        $.each($('input'), function(index, data) {
+            status[data['name']] = data.value;
+        });
+        name = $('#plugin_name').text();
+        console.log(name);
+        $.ajax({url : '/run_plugin',type : 'post',data : status,
+            success : function(result) {
+                if (result.status == 'SUCCESS'){
+                    location.href = 'reports';
+                }
+            }
+        });
+    }
+    </script>
+{% endblock %}
