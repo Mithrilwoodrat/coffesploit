@@ -4,6 +4,7 @@ import sys
 from coffesploit.core.pluginmanage.importplugin import ImportPlugin
 from coffesploit.core.logmanager import logmanager
 
+
 class PluginManager(object):
     """该类负责加载插件,提供插件运行和插件结果函数.
     The Class is designed to load plugin at runtime,
@@ -15,6 +16,7 @@ class PluginManager(object):
         self.current_plugin_class = None
         self.current_plugin_type = None
         self.current_plugin = None
+        self.status = None
         self.importer = ImportPlugin()
 
     def set_current_plugin_name(self, plugin_name):
@@ -43,29 +45,37 @@ class PluginManager(object):
         self.set_current_plugin_name(plugin_name)
         if sys.argv[0] != self.importer.getpath():
             importfile = "coffesploit.plugins." + self.current_plugin_type\
-                         + "." +self.current_plugin_file[0:-3]
+                         + "." + self.current_plugin_file[0:-3]
         else:
-            importfile = self.current_plugin_type + "." +self.current_plugin_file[0:-3]
+            importfile = self.current_plugin_type + "." + self.current_plugin_file[0:-3]
         try:
             mode = importlib.import_module(importfile)
         except ImportError:
             mode = None
-            logmanager.puttolog("can't import : "+importfile)
+            logmanager.puttolog("can't import : " + importfile)
             exit(1)
         plugin_class = getattr(mode, self.current_plugin_class)
         self.current_plugin = plugin_class()
+        if self.current_plugin :  # load plugin status
+            self.status = self.current_plugin.status()
 
     def plugin_run(self):
         """run current plugin"""
         if self.current_plugin is not None:
-            self.current_plugin.run()
+            self.current_plugin.run(self.status)
+            #if self.current_plugin_name != 'nmap':
+            logmanager.puttolog(self.plugin_result())
 
     def plugin_result(self):
         """get the result of the plugin"""
         if self.current_plugin is not None:
             return self.current_plugin.result()
         else:
-            return self.current_plugin_name,"Reslut is None"
+            return self.current_plugin_name, "Reslut is None"
 
     def plugin_status(self):
-        return self.current_plugin.status()
+        return self.status
+
+    def set_args(self, *args):
+        if len(args) == 2 and args[0] in self.status:
+            self.status[args[0]] = args[1]

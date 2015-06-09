@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
-from nmap import PortScanner
-#use python nmap parse lib
+from nmap import PortScanner  # use python nmap parse lib
 from coffesploit.core.pluginmanage.scanplugin import ScanPlugin
 from coffesploit.core.pluginmanage.resultplugin import ResultPlugin
 
@@ -12,17 +11,17 @@ class NmapParser(ScanPlugin):
         self.nm = PortScanner()
         self.hosts = None
         self.ports = None
-        self.argments = "-sV"
+        self.arguments = "-sV"
         self.resultparser = ResultPlugin()
         
     def args_status(self):
-        return {"hosts": self.hosts, "ports": self.ports, "argments": self.argments}
+        return {"hosts": self.hosts, "ports": self.ports, "arguments": self.arguments}
         
     def start_scan(self):
         if self.hosts is not None:
-            self.nm.scan(self.hosts, arguments=self.argments)
+            self.nm.scan(self.hosts, arguments=self.arguments)
             if self.ports is not None:
-                self.nm.scan(self.hosts, self.ports, arguments=self.argments)
+                self.nm.scan(self.hosts, self.ports, arguments=self.arguments)
         else:
             print 'please set hosts'
             
@@ -30,8 +29,12 @@ class NmapParser(ScanPlugin):
         if self.hosts is not None and self.nm.all_hosts():
             return self.nm[self.hosts]
     
-    def run(self):
-        super(NmapParser, self).run()
+    def run(self, status):
+        if status and len(status) == 3:
+            self.hosts = status['hosts']
+            self.ports = status['ports']
+            self.arguments = status['arguments']
+        super(NmapParser, self).run(status)
         print "scanning .................\n", "please wait!\n"
         self.start_scan()
         
@@ -46,23 +49,5 @@ class NmapParser(ScanPlugin):
             self.resultparser.set_openports(self.scan_result().all_tcp())
             if u'tcp' in self.scan_result():
                 self.resultparser.set_servers(self.scan_result()[u'tcp'])
-
-            print "hostname:", self.resultparser.get_hostname
-            print "address:", self.resultparser.get_address
-            print "state is :", self.resultparser.get_state
-            print "open ports:", self.resultparser.get_openports
-            print "servers:"
-            servers = self.resultparser.get_servers
-            for port in servers:
-                print "port :", port
-                print servers[port]
+            self.resultparser.log_result()
         return self.scan_result()
-    
-    def set_args(self, *args):
-        if len(args) == 2:
-            if args[0] == "hosts":
-                self.hosts = args[1]
-            elif args[0] == "ports":
-                self.ports = args[1]
-            elif args[0] == "argments":
-                self.argments = args[1]

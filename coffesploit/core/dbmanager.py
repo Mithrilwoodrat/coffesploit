@@ -13,14 +13,17 @@ class DBManager(object):
         self.Session = sessionmaker(bind=self.engine)
         self.session = self.Session()
 
-    def add_target(self, host, result):
-        new_target = Target(host=host, result=result)
+    def add_target(self, host, plugin_name, result):
+        new_target = Target(host=host, plugin_name=plugin_name, result=result)
         self.session.add(new_target)
         self.session.commit()
 
     def query_target(self, host):
         target = self.session.query(Target).filter_by(host=host).first()
-        return {target.host: target.result}
+        if target:
+            return {target.host: (target.plugin_name,target.result)}
+        else:
+            return None
 
 # instance
 dbmanager = DBManager()

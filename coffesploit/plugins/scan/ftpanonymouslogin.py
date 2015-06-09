@@ -24,8 +24,9 @@ class FtpAnonymousLogin(ScanPlugin):
         except Exception, e:
             return False
 
-    def run(self):
-        super(FtpAnonymousLogin, self).run()
+    def run(self,status):
+        self.host = status['host']
+        super(FtpAnonymousLogin, self).run(status)
         if self.anonlogin(self.host):
             self.isvulnerable = True
 
@@ -38,8 +39,3 @@ class FtpAnonymousLogin(ScanPlugin):
             Login Failed. '
         else:
             return None
-
-    def set_args(self, *args):
-        if len(args) == 2:
-            if args[0] == 'host':
-                self.host = args[1]

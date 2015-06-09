@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from coffesploit.core.logmanager import logmanager
 
 
 class ResultPlugin(object):
@@ -43,3 +44,15 @@ class ResultPlugin(object):
     @property
     def get_state(self):
         return self.state
+
+    def log_result(self):
+        result = "hostname:" +  self.get_hostname + '\n'
+        result += "address:" + self.get_address + '\n'
+        result +=  "state is :" + self.get_state + '\n'
+        result += "open ports:" + str(self.get_openports) + '\n'
+        result +=  "servers:" + '\n'
+        servers = self.get_servers
+        for port in servers:
+            result += "port :" +  str(port) + '\n'
+            result += str(servers[port]) + '\n'
+        logmanager.puttolog(result)
