@@ -3,11 +3,19 @@
 {% if result  %}
         {# not a string #}
         {% if result is string %}
+        <div class="panel panel-primary">
+            <div class="panel-heading">
                 {{result}}
+            </div>
+        </div>
         {% else %}
         {% for arg in result %}
-            {{arg}}
-             {{result[arg]}}
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title"> {{arg}}</h3>
+            </div>
+            <div class="panel-body"> {{result[arg]}}</div>
+        </div>
         {% endfor %}
         {% endif %}
 {% else %}
