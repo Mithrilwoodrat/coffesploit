@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import os
 from server import csfserver
-from flask import render_template, flash, jsonify, request, redirect, url_for
+from flask import render_template, flash, jsonify, request, redirect
 from config import UPLOAD_FOLDER, allowed_file
 from werkzeug.utils import secure_filename
 from server import main
@@ -20,12 +20,12 @@ def new_scan():
 
 @csfserver.route('/about')
 def about():
-    return render_template("about.html")
+    return render_template("about.html", version=main.version())
 
 
-@csfserver.route('/setting')
-def setting():
-    return render_template('setting.html',title="Upload your plugin")
+#@csfserver.route('/setting')
+#def setting():
+#    return render_template('setting.html', title="Upload your plugin")
 
 
 @csfserver.route('/upload/<plugin_type>', methods=['POST', 'GET'])
