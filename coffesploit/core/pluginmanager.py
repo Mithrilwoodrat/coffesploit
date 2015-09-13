@@ -65,6 +65,7 @@ class PluginManager(object):
             self.current_plugin.run(self.status)
             #if self.current_plugin_name != 'nmap':
             logmanager.puttolog(self.plugin_result())
+            return self.plugin_result()
 
     def plugin_result(self):
         """get the result of the plugin"""

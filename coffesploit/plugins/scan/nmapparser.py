@@ -13,10 +13,7 @@ class NmapParser(ScanPlugin):
         self.ports = None
         self.arguments = "-sV"
         self.resultparser = ResultPlugin()
-        
-    def args_status(self):
-        return {"hosts": self.hosts, "ports": self.ports, "arguments": self.arguments}
-        
+
     def start_scan(self):
         if self.hosts is not None:
             self.nm.scan(self.hosts, arguments=self.arguments)
@@ -39,7 +36,7 @@ class NmapParser(ScanPlugin):
         self.start_scan()
         
     def status(self):
-        return self.args_status()
+        return {"hosts": self.hosts, "ports": self.ports, "arguments": self.arguments}
 
     def result(self):
         if self.scan_result() is not None:

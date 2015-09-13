@@ -82,7 +82,7 @@ class Coffesploit(object):
     def update(self):
         self.updatemanager.fetch_update_list()
         print 'get update list', self.updatemanager.get_update_list()
-        if self.updatemanager.get_update_list() is not []:
+        if self.updatemanager.get_update_list() != []:
             self.updatemanager.download_exps()
         else:
             print 'update failed'
